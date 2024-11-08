@@ -1,6 +1,6 @@
 ﻿partial class CustomContractResolver
 {
-    string ResolveDictionaryKey(JsonDictionaryContract contract, string name, object original)
+    string ResolveDictionaryKey(JsonDictionaryContract contract, JsonWriter writer, string name, object original)
     {
         var counter = Counter.Current;
         var keyType = contract.DictionaryKeyType;
@@ -57,7 +57,6 @@
             }
         }
 
-        ApplyScrubbers.ApplyForPropertyValue(name.AsSpan(), settings, counter);
         if (keyType == typeof(Type))
         {
             var type = Type.GetType(name);
@@ -69,6 +68,7 @@
             return type.SimpleName();
         }
 
-        return name;
+        var verifyJsonWriter = (VerifyJsonWriter) writer;
+        return ApplyScrubbers.ApplyForPropertyValue(name.AsSpan(), verifyJsonWriter.settings, counter).ToString();
     }
 }

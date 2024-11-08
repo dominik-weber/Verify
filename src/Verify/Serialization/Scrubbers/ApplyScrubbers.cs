@@ -140,6 +140,7 @@ static class ApplyScrubbers
         target.FixNewlines();
     }
 
+    [Pure]
     public static CharSpan ApplyForPropertyValue(CharSpan value, VerifySettings settings, Counter counter)
     {
         var builder = new StringBuilder(value.Length);
